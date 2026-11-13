@@ -63,8 +63,8 @@ This library uses FatFs.
 * Original project: `FatFs <https://elm-chan.org/fsw/ff/00index_e.html>`_.
 * Upstream Git mirror: `abbrev/fatfs <https://github.com/abbrev/fatfs>`_.
 * XMOS fork: `xmosforks/FatFs <https://github.com/xmosforks/FatFs>`_.
-* Upstream version: ``R0.16`` with upstream patches through patch 3.
-* XMOS downstream revision: ``R0.16+xmos.1``.
+* Upstream version: ``R0.16.post3`` (``R0.16`` with upstream patches 1 to 3).
+  The source is not modified by XMOS.
 * Location: ``third_party/FatFs``.
 
 *************************

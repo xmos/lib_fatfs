@@ -22,6 +22,12 @@ short (8.3) filenames and code page 437. exFAT and 64-bit sector addressing
 are disabled. Operation is non-reentrant; access to a volume must be serialised
 by the application.
 
+Supported integration policy: use one filesystem owner task per application
+and serialise all FatFs calls through it. Do not let a second task, or another
+library that calls FatFs, access the same storage independently of that owner.
+This ownership rule does not imply only one FATFS volume object: FatFs may
+mount several volumes, but the owner still serialises access.
+
 See the `upstream documentation <../third_party/FatFs/documents/index.html>`_
 for the current API, configuration options and release history.
 
