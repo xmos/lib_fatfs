@@ -1,8 +1,8 @@
 :orphan:
 
-#################################
-lib_fatfs: FAT filesystem library
-#################################
+################################
+lib_fatfs: FatFs wrapper library
+################################
 
 :vendor: XMOS
 :version: 1.0.0
