@@ -1,6 +1,6 @@
 // Copyright 2026 XMOS LIMITED.
 // This Software is subject to the terms of the XMOS Public Licence: Version 1.
-/* Native regression test for the R0.16 port: no USB device or disk is modified. */
+/* FatFs regression test on a RAM disk. Builds natively and for xcore. */
 #include <assert.h>
 #include <stdio.h>
 #include <string.h>
@@ -8,7 +8,15 @@
 #include "ff.h"
 #include "diskio.h"
 
-#define SECTORS 8192
+#define SECTORS 256
+/* The simulator is slow, so run fewer read cycles on xcore than natively. */
+#ifndef REPEATS
+#ifdef __xcore__
+#define REPEATS 3
+#else
+#define REPEATS 100
+#endif
+#endif
 static BYTE disk[SECTORS][512];
 static DSTATUS state = STA_NOINIT;
 static int fail_read;
@@ -112,17 +120,23 @@ int main(void)
     MKFS_PARM options = {FM_FAT | FM_SFD, 0, 0, 0, 0};
     assert(f_mkfs("0:", &options, work, sizeof(work)) == FR_OK);
     assert(f_mount(&fs, "0:", 1) == FR_OK);
-    create_file(&file, "TEST0.JPG", 8180, 17);
+    create_file(&file, "TEST0.BIN", 8180, 17);
     create_file(&file, "TEST.TXT", 4097, 23);
     create_file(&file, "EMPTY.TXT", 0, 0);
     assert(f_unmount("0:") == FR_OK);
     assert(f_mount(&fs, "0:", 1) == FR_OK);
-    for (unsigned repeat = 0; repeat < 100; ++repeat) {
-        check_file(&file, "TEST0.JPG", 8180, 17);
+    for (unsigned repeat = 0; repeat < REPEATS; ++repeat) {
+        check_file(&file, "TEST0.BIN", 8180, 17);
         check_file(&file, "TEST.TXT", 4097, 23);
         check_file(&file, "EMPTY.TXT", 0, 0);
         assert(f_open(&file, "MISSING.TXT", FA_READ) == FR_NO_FILE);
     }
+    /* FF_FS_LOCK is set by this test's fatfs_conf.h, proving the override is
+     * applied: a file open for writing cannot be opened again. */
+    FIL second;
+    assert(f_open(&file, "TEST.TXT", FA_WRITE) == FR_OK);
+    assert(f_open(&second, "TEST.TXT", FA_WRITE) == FR_LOCKED);
+    assert(f_close(&file) == FR_OK);
     assert(f_unmount("0:") == FR_OK);
     fail_read = 1;
     assert(f_mount(&fs, "0:", 1) == FR_DISK_ERR);
@@ -130,6 +144,6 @@ int main(void)
     assert(f_mount(&fs, "0:", 1) == FR_OK);
     check_file(&file, "TEST.TXT", 4097, 23);
     assert(f_unmount("0:") == FR_OK);
-    puts("PASS: 100 JPEG/TXT/empty/missing-file cycles, buffer guards, read-error recovery");
+    printf("PASS: %u file cycles, buffer guards, file locking, read-error recovery\n", (unsigned)REPEATS);
     return 0;
 }
