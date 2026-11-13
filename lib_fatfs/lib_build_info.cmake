@@ -12,7 +12,6 @@ endif()
 set(LIB_COMPILER_FLAGS  -O3
                         -Wall
                         -Wextra
-                        -Wsign-compare
-                        -Wconversion)
+                        -Wsign-compare)
 
 XMOS_REGISTER_MODULE()
