@@ -137,6 +137,9 @@ int main(void)
     assert(f_open(&file, "TEST.TXT", FA_WRITE) == FR_OK);
     assert(f_open(&second, "TEST.TXT", FA_WRITE) == FR_LOCKED);
     assert(f_close(&file) == FR_OK);
+    /* FF_USE_LFN is also set there: long file names need the Unicode module. */
+    create_file(&file, "A long file name.text", 600, 5);
+    check_file(&file, "A long file name.text", 600, 5);
     assert(f_unmount("0:") == FR_OK);
     fail_read = 1;
     assert(f_mount(&fs, "0:", 1) == FR_DISK_ERR);
@@ -144,6 +147,6 @@ int main(void)
     assert(f_mount(&fs, "0:", 1) == FR_OK);
     check_file(&file, "TEST.TXT", 4097, 23);
     assert(f_unmount("0:") == FR_OK);
-    printf("PASS: %u file cycles, buffer guards, file locking, read-error recovery\n", (unsigned)REPEATS);
+    printf("PASS: %u file cycles, buffer guards, file locking, long names, read-error recovery\n", (unsigned)REPEATS);
     return 0;
 }

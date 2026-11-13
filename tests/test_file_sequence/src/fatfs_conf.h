@@ -3,7 +3,9 @@
 #ifndef FATFS_CONF_H_
 #define FATFS_CONF_H_
 
-/* Exercise the configuration override: allow two open files, with locking. */
+/* Exercise the configuration override: allow two open files, with locking,
+ * and long file names. */
 #define FF_FS_LOCK 2
+#define FF_USE_LFN 1
 
 #endif

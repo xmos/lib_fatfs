@@ -75,6 +75,10 @@ enable long file names:
 
     #define FF_USE_LFN 1
 
+Two options need functions that the application must supply, because they depend on its
+memory allocator or operating system: ``FF_USE_LFN 3`` needs ``ff_memalloc`` and ``ff_memfree``,
+and ``FF_FS_REENTRANT 1`` needs the ``ff_mutex_*`` functions. See the FatFs documentation.
+
 Do not edit ``fatfs_config.h`` or upstream ``ffconf.h`` to configure an application. The same
 configuration must be visible to every source file that includes ``ff.h``; XCommon CMake
 arranges this for an application-level ``fatfs_conf.h``.
