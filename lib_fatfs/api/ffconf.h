@@ -1,3 +1,5 @@
+// Copyright 2026 XMOS LIMITED.
+// This Software is subject to the terms of the XMOS Public Licence: Version 1.
 /* XMOS FatFs R0.16 configuration. Keep all upstream sources unmodified. */
 #ifndef LIB_FATFS_FFCONF_H_
 #define LIB_FATFS_FFCONF_H_

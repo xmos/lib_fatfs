@@ -5,7 +5,7 @@ lib_fatfs: FAT filesystem library
 #################################
 
 :vendor: xross
-:version: 0.0.1
+:version: 1.0.0
 :scope: General Use
 :description: FatFs FAT filesystem integration for XCORE
 :category: General purpose

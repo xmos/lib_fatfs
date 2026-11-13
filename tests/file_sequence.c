@@ -1,3 +1,5 @@
+// Copyright 2026 XMOS LIMITED.
+// This Software is subject to the terms of the XMOS Public Licence: Version 1.
 /* Native regression test for the R0.16 port: no USB device or disk is modified. */
 #include <assert.h>
 #include <stdio.h>
